@@ -4,22 +4,15 @@ import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
 
-@Data
-public class ContactDTO {
-	
-	private Integer id;
-	
-	@NotBlank(message = "Nome deve ser obrigatório")
-	private String name;
-	
-	@Email(message = "Email inválido")
-	@NotBlank(message = "Email deve ser obrigatório")
-	private String email;
-	
-	private LocalDateTime createdAt;
-
+public record ContactDTO(
+		Integer id,
+		@NotBlank(message = "Nome deve ser obrigatório") String name,
+		@Email(message = "Email inválido") 
+		@NotBlank(message = "Email deve ser obrigatório") String email,
+		LocalDateTime createdAt
+		) {
 	
 }
+	
 		
