@@ -5,9 +5,10 @@
       <mat-icon>add</mat-icon> Novo Contato
     </button>
   </div>
-
+  @if (contacts.length > 0 ) {
+    <span>{{contacts.length}} pessoa(s) cadastrada(s)</span>
+  }
   @if (contacts.length > 0) {
-    <!-- VISÃO DESKTOP / TABLET (MatTable) -->
     <div class="table-responsive d-none d-md-block mat-elevation-z2">
       <table mat-table [dataSource]="contacts" class="w-100">
 
@@ -53,7 +54,6 @@
       </table>
     </div>
 
-    <!-- VISÃO CELULAR (Cards Material) -->
     <div class="cards-mobile d-md-none">
       @for (contact of contacts; track contact.id) {
         <mat-card class="mb-3">
@@ -67,10 +67,10 @@
           </mat-card-content>
           <mat-card-actions align="end">
             <button mat-button color="primary" [routerLink]="['edit', contact.id]">
-              EDITAR
+              <mat-icon>edit</mat-icon> EDITAR
             </button>
             <button mat-button color="warn" (click)="confirmDelete(contact)">
-              DELETAR
+              <mat-icon>delete</mat-icon> DELETAR
             </button>
           </mat-card-actions>
         </mat-card>

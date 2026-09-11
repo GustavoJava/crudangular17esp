@@ -1,15 +1,12 @@
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import Swal from 'sweetalert2';
-
-// Imports do Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { RouterModule } from '@angular/router';
 
 import { ContactDTO } from '../model/ContactDTO';
 import { ContactService } from '../services/contact.service';
