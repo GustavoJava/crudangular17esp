@@ -1,79 +1,83 @@
-<div class="container my-4">
-  <!-- Cabeçalho com o botão no tamanho natural -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h2 mb-0">Contatos</h1>
-    <button class="btn btn-primary" routerLink="/new">
-      + Novo Contato
+<div class="list-container">
+  <div class="header-action">
+    <h2>Contatos</h2>
+    <button mat-raised-button color="primary" routerLink="/new">
+      <mat-icon>add</mat-icon> Novo Contato
     </button>
   </div>
 
   @if (contacts.length > 0) {
-    <!-- VISÃO DESKTOP/TABLET (Tabela) -->
-    <div class="table-responsive d-none d-md-block shadow-sm rounded border">
-      <table class="table table-hover align-middle mb-0">
-        <thead class="table-light">
-          <tr>
-            <th>#ID</th>
-            <th>Nome</th>
-            <th>E-mail</th>
-            <th>Criado em</th>
-            <th class="text-end">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (contact of contacts; track contact.id) {
-            <tr>
-              <td>{{ contact.id }}</td>
-              <td class="fw-medium">{{ contact.name }}</td>
-              <td>{{ contact.email }}</td>
-              <td>{{ contact.createdAt | date : 'dd/MM/yyyy HH:mm' }}</td>
-              <td class="text-end">
-                <div class="btn-group btn-group-sm">
-                  <button class="btn btn-primary" [routerLink]="['edit', contact.id]">
-                    Editar
-                  </button>
-                  <button class="btn btn-danger" (click)="confirmDelete(contact)">
-                    Deletar
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        </tbody>
+    <!-- VISÃO DESKTOP / TABLET (MatTable) -->
+    <div class="table-responsive d-none d-md-block mat-elevation-z2">
+      <table mat-table [dataSource]="contacts" class="w-100">
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> #ID </th>
+          <td mat-cell *matCellDef="let contact"> {{ contact.id }} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Nome </th>
+          <td mat-cell *matCellDef="let contact"> <strong>{{ contact.name }}</strong> </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef> E-mail </th>
+          <td mat-cell *matCellDef="let contact"> {{ contact.email }} </td>
+        </ng-container>
+
+        <!-- CreatedAt Column -->
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef> Criado em </th>
+          <td mat-cell *matCellDef="let contact"> {{ contact.createdAt | date : 'dd/MM/yyyy HH:mm' }} </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="text-end"> Ações </th>
+          <td mat-cell *matCellDef="let contact" class="text-end">
+            <button mat-icon-button color="primary" [routerLink]="['edit', contact.id]">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="confirmDelete(contact)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
 
-    <!-- VISÃO CELULAR (Cards) -->
-    <div class="d-flex flex-column gap-3 d-md-none">
+    <!-- VISÃO CELULAR (Cards Material) -->
+    <div class="cards-mobile d-md-none">
       @for (contact of contacts; track contact.id) {
-        <div class="card shadow-sm border-0">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <h5 class="card-title mb-0 text-primary">{{ contact.name }}</h5>
-              <span class="badge bg-light text-dark border">#{{ contact.id }}</span>
-            </div>
-
-            <p class="card-text mb-1 text-muted">
-              <small><strong>E-mail:</strong> {{ contact.email }}</small>
-            </p>
-            <p class="card-text mb-3 text-muted">
-              <small><strong>Criado em:</strong> {{ contact.createdAt | date : 'dd/MM/yyyy HH:mm' }}</small>
-            </p>
-
-            <div class="d-flex gap-2">
-              <button class="btn btn-primary btn-sm flex-fill" [routerLink]="['edit', contact.id]">
-                Editar
-              </button>
-              <button class="btn btn-danger btn-sm flex-fill" (click)="confirmDelete(contact)">
-                Deletar
-              </button>
-            </div>
-          </div>
-        </div>
+        <mat-card class="mb-3">
+          <mat-card-header>
+            <mat-card-title>{{ contact.name }}</mat-card-title>
+            <mat-card-subtitle>#{{ contact.id }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content class="mt-2">
+            <p><strong>E-mail:</strong> {{ contact.email }}</p>
+            <p><strong>Criado em:</strong> {{ contact.createdAt | date : 'dd/MM/yyyy HH:mm' }}</p>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-button color="primary" [routerLink]="['edit', contact.id]">
+              EDITAR
+            </button>
+            <button mat-button color="warn" (click)="confirmDelete(contact)">
+              DELETAR
+            </button>
+          </mat-card-actions>
+        </mat-card>
       }
     </div>
   } @else {
-    <div class="alert alert-info text-center py-4">
+    <div class="empty-message">
       Nenhum contato encontrado.
     </div>
   }

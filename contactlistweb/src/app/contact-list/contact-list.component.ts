@@ -4,22 +4,41 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 
+// Imports do Angular Material
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+
 import { ContactDTO } from '../model/ContactDTO';
 import { ContactService } from '../services/contact.service';
 import { MessageService } from '../services/message.service';
+import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-contact-list',
   standalone: true,
-  imports: [DatePipe, RouterModule],
+  imports: [
+    DatePipe,
+    RouterModule,
+    MatTableModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatDialogModule
+  ],
   templateUrl: './contact-list.component.html',
   styleUrl: './contact-list.component.scss'
 })
 export default class ContactListComponent implements OnInit {
 
   private contactService = inject(ContactService);
+  private dialog = inject(MatDialog);
+  private messageService = inject(MessageService); // Injeção direta em 1 linha
 
   contacts: ContactDTO[] = [];
+  displayedColumns: string[] = ['id', 'name', 'email', 'createdAt', 'actions'];
 
   ngOnInit(): void {
     this.loadAll();
@@ -36,33 +55,34 @@ export default class ContactListComponent implements OnInit {
     });
   }
 
+  delete(contact: ContactDTO): void {
+     this.contactService.delete(contact.id).subscribe({
+      next: () => {
+        this.messageService.successMessage();
+        this.loadAll();
+      },
+      error: (erro: HttpErrorResponse) => {
+        this.messageService.errorMessage();
+        console.error(erro.error);
+      }
+    });
+  }
+
   confirmDelete(contact: ContactDTO): void {
-    Swal.fire({
-      title: `Deseja realmente remover ${contact.name}?`,
-      text: 'Operação não poderá ser desfeita!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'Sim',
-      cancelButtonText: 'Cancelar',
-      focusCancel: true
-    }).then((result) => {
-      if (result.isConfirmed) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '430px',
+      data: {
+        title: 'Confirmar exclusão',
+        message: `Deseja realmente excluir ${contact.name}?`,
+
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
         this.delete(contact);
       }
     });
   }
 
-  delete(contact: ContactDTO): void {
-    this.contactService.delete(contact.id).subscribe({
-      next: () => {
-        MessageService.sucessMessage();
-        this.loadAll();
-      },
-      error: (erro: HttpErrorResponse) => {
-        MessageService.errorDeleteMessage(contact.name);
-        console.error(erro.error);
-      }
-    });
-  }
 }

@@ -1,19 +1,41 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
+
+// Imports do Angular Material
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 import { ContactDTO } from '../model/ContactDTO';
 import { ContactService } from '../services/contact.service';
 import { MessageService } from '../services/message.service';
+import { MatIcon } from '@angular/material/icon';
+
+export const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 @Component({
   selector: 'app-contact-form',
   standalone: true,
-  imports: [RouterModule, ReactiveFormsModule],
+  imports: [
+    RouterModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIcon,
+  ],
   templateUrl: './contact-form.component.html',
-  styleUrl: './contact-form.component.scss'
+  styleUrl: './contact-form.component.scss',
 })
 export default class ContactFormComponent implements OnInit {
 
@@ -21,6 +43,7 @@ export default class ContactFormComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private formBuilder = inject(FormBuilder);
+  private messageService = inject(MessageService);
 
   form!: FormGroup;
   contact?: ContactDTO;
@@ -38,7 +61,7 @@ export default class ContactFormComponent implements OnInit {
         },
         error: (err: HttpErrorResponse) => {
           console.error(err.error);
-        }
+        },
       });
     }
   }
@@ -47,8 +70,8 @@ export default class ContactFormComponent implements OnInit {
     this.form = this.formBuilder.group({
       id: [''],
       name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      createdAt: ['']
+      email: ['', [Validators.required, Validators.pattern(EMAIL_PATTERN)]],
+      createdAt: [''],
     });
   }
 
@@ -69,14 +92,15 @@ export default class ContactFormComponent implements OnInit {
 
     request.subscribe({
       next: () => {
-        MessageService.sucessMessage();
+        this.messageService.successMessage();
         this.errors = [];
         this.router.navigate(['/']);
       },
       error: (response) => {
-        this.errors = response.error?.errors || ['Ocorreu um erro ao salvar o contato.'];
-      }
+        this.errors = response.error?.errors || [
+          'Ocorreu um erro ao salvar o contato.',
+        ];
+      },
     });
   }
-
 }
