@@ -21,7 +21,8 @@ import com.todotic.contactlistapi.service.ContactService;
 
 @RestController
 @RequestMapping(value = "/api/contacts")
-@CrossOrigin("*")
+//@CrossOrigin("*")
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.100.4:4200"})
 public class ContactController {
 
 	@Autowired

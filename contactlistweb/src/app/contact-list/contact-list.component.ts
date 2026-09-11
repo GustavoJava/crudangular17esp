@@ -15,57 +15,54 @@ import { MessageService } from '../services/message.service';
   templateUrl: './contact-list.component.html',
   styleUrl: './contact-list.component.scss'
 })
-export default class ContactListComponent implements OnInit{
+export default class ContactListComponent implements OnInit {
 
   private contactService = inject(ContactService);
 
   contacts: ContactDTO[] = [];
 
   ngOnInit(): void {
-   this.loadAll();
+    this.loadAll();
   }
 
-  loadAll(){
-    this.contactService.list().subscribe((contacts: ContactDTO[]) =>{
-      this.contacts = contacts;
-    });
-  }
-
-  confirmDelete(contact:ContactDTO){
-    const message = (`Deseja realmente remover ${contact.name} ?`);
-
-    Swal.fire({
-      title: (message),
-      text: ('Operação não poderá ser desfeita!'),
-      icon: ('warning'),
-      showCancelButton: true,
-      confirmButtonColor: ('#d33'),
-      confirmButtonText: ('Sim'),
-      cancelButtonText: ('Cancelar'),
-      focusCancel: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.delete(contact);
-        MessageService.sucessMessage();
+  loadAll(): void {
+    this.contactService.list().subscribe({
+      next: (contacts: ContactDTO[]) => {
+        this.contacts = contacts;
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Erro ao carregar contatos', err);
       }
     });
   }
 
-  delete(contact:ContactDTO) {
-    const errorMessage = (`Erro ao deletar ${contact.name}`);
-
-    this.contactService.delete(contact.id).subscribe(()=>{
-     this.loadAll();
-    },(erro: HttpErrorResponse)=>{
-      MessageService.errorDeleteMessage(contact.name);
-      console.log(erro.error);
+  confirmDelete(contact: ContactDTO): void {
+    Swal.fire({
+      title: `Deseja realmente remover ${contact.name}?`,
+      text: 'Operação não poderá ser desfeita!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Cancelar',
+      focusCancel: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.delete(contact);
+      }
     });
   }
 
-  getDate(value: any): Date {
-    var datePipe = new DatePipe('pt-BR');
-    value = datePipe.transform('17/09/2024', 'dd/MM/yyyy');
-    return value
+  delete(contact: ContactDTO): void {
+    this.contactService.delete(contact.id).subscribe({
+      next: () => {
+        MessageService.sucessMessage();
+        this.loadAll();
+      },
+      error: (erro: HttpErrorResponse) => {
+        MessageService.errorDeleteMessage(contact.name);
+        console.error(erro.error);
+      }
+    });
   }
-
 }

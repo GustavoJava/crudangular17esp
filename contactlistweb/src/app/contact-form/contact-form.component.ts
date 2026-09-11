@@ -22,61 +22,61 @@ export default class ContactFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private formBuilder = inject(FormBuilder);
 
-  form?:FormGroup;
+  form!: FormGroup;
   contact?: ContactDTO;
-  errors: [] = [];
+  errors: string[] = [];
 
   ngOnInit(): void {
-   this.initForm();
-   const Id = this.route.snapshot.params['id'];
-
-   if(Id){
-    this.contactService.get(Id).subscribe((response) =>{
-     this.contact = response;
-     this.form!.patchValue(this.contact);
-    },(erro: HttpErrorResponse)=>{
-      console.log(erro.error);
-    });
-   } else {
     this.initForm();
-   }
+    const id = this.route.snapshot.params['id'];
 
+    if (id) {
+      this.contactService.get(id).subscribe({
+        next: (response) => {
+          this.contact = response;
+          this.form.patchValue(this.contact);
+        },
+        error: (err: HttpErrorResponse) => {
+          console.error(err.error);
+        }
+      });
+    }
   }
 
-  initForm() {
+  initForm(): void {
     this.form = this.formBuilder.group({
-      id:[''],
-      name:['', [Validators.required]],
-      email:['',[Validators.required, Validators.email]],
-      createdAt:['']
+      id: [''],
+      name: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      createdAt: ['']
     });
   }
 
-  save() {
-    const contact = (this.form!.value);
+  save(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    const contactData: ContactDTO = this.form.value;
     let request: Observable<ContactDTO>;
 
-    // if(this.form?.invalid){
-    //   this.form.markAllAsTouched();
-    //   return;
-    // }
-
-    if(this.contact){
-       request = this.contactService.update(contact.id, contact);
-    } else{
-      request = this.contactService.create(contact);
+    if (this.contact) {
+      request = this.contactService.update(contactData.id, contactData);
+    } else {
+      request = this.contactService.create(contactData);
     }
 
     request.subscribe({
-      next: ()=> {
+      next: () => {
         MessageService.sucessMessage();
         this.errors = [];
         this.router.navigate(['/']);
-      },error: response =>{
-        this.errors = response.error.errors;
+      },
+      error: (response) => {
+        this.errors = response.error?.errors || ['Ocorreu um erro ao salvar o contato.'];
       }
     });
-
   }
 
 }

@@ -1,39 +1,80 @@
-<h1 class="mb-5">contatos</h1>
+<div class="container my-4">
+  <!-- Cabeçalho com o botão no tamanho natural -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2 mb-0">Contatos</h1>
+    <button class="btn btn-primary" routerLink="/new">
+      + Novo Contato
+    </button>
+  </div>
 
-<div class="text-end">
-  <button class="btn btn-primary" routerLink="/new">
-      New Contact
-  </button>
+  @if (contacts.length > 0) {
+    <!-- VISÃO DESKTOP/TABLET (Tabela) -->
+    <div class="table-responsive d-none d-md-block shadow-sm rounded border">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>#ID</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Criado em</th>
+            <th class="text-end">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (contact of contacts; track contact.id) {
+            <tr>
+              <td>{{ contact.id }}</td>
+              <td class="fw-medium">{{ contact.name }}</td>
+              <td>{{ contact.email }}</td>
+              <td>{{ contact.createdAt | date : 'dd/MM/yyyy HH:mm' }}</td>
+              <td class="text-end">
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-primary" [routerLink]="['edit', contact.id]">
+                    Editar
+                  </button>
+                  <button class="btn btn-danger" (click)="confirmDelete(contact)">
+                    Deletar
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- VISÃO CELULAR (Cards) -->
+    <div class="d-flex flex-column gap-3 d-md-none">
+      @for (contact of contacts; track contact.id) {
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title mb-0 text-primary">{{ contact.name }}</h5>
+              <span class="badge bg-light text-dark border">#{{ contact.id }}</span>
+            </div>
+
+            <p class="card-text mb-1 text-muted">
+              <small><strong>E-mail:</strong> {{ contact.email }}</small>
+            </p>
+            <p class="card-text mb-3 text-muted">
+              <small><strong>Criado em:</strong> {{ contact.createdAt | date : 'dd/MM/yyyy HH:mm' }}</small>
+            </p>
+
+            <div class="d-flex gap-2">
+              <button class="btn btn-primary btn-sm flex-fill" [routerLink]="['edit', contact.id]">
+                Editar
+              </button>
+              <button class="btn btn-danger btn-sm flex-fill" (click)="confirmDelete(contact)">
+                Deletar
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="alert alert-info text-center py-4">
+      Nenhum contato encontrado.
+    </div>
+  }
 </div>
-
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th>#Id</th>
-      <th>Nome</th>
-      <th>Email</th>
-      <th>Criado em</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (contact of contacts; track contact.id) {
-    <tr>
-      <td>{{contact.id}}</td>
-      <td>{{contact.name}}</td>
-      <td>{{contact.email}}</td>
-      <td>{{contact.createdAt | date : 'dd/MM/yyyy HH:mm'}}</td>
-      <td class="text-end">
-        <div class="btn-group">
-          <button class="btn btn-primary" [routerLink]="['edit',contact.id]">
-            Editar
-          </button>
-          <button class="btn btn-danger" (click)="confirmDelete(contact)">
-            Deletar
-          </button>
-      </div>
-      </td>
-    </tr>
-    }
-  </tbody>
-</table>
