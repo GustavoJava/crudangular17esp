@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ContactDTO } from '../model/ContactDTO';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { Observable } from 'rxjs';
 export class ContactService {
 
   private http = inject(HttpClient);
-  private readonly BASE_URL = 'http://localhost:8080/api/contacts';
+  private readonly BASE_URL = `${environment.apiUrl}/contacts`;
 
   constructor() { }
 

@@ -1,39 +1,84 @@
-<h1 class="mb-5">contatos</h1>
+<div class="list-container">
+  <div class="header-action">
+    <h2>Contatos</h2>
+    <button mat-raised-button color="primary" routerLink="/new">
+      <mat-icon>add</mat-icon> Novo Contato
+    </button>
+  </div>
+  @if (contacts.length > 0 ) {
+    <span>{{contacts.length}} pessoa(s) cadastrada(s)</span>
+  }
+  @if (contacts.length > 0) {
+    <div class="table-responsive d-none d-md-block mat-elevation-z2">
+      <table mat-table [dataSource]="contacts" class="w-100">
 
-<div class="text-end">
-  <button class="btn btn-primary" routerLink="/new">
-      New Contact
-  </button>
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> #ID </th>
+          <td mat-cell *matCellDef="let contact"> {{ contact.id }} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Nome </th>
+          <td mat-cell *matCellDef="let contact"> <strong>{{ contact.name }}</strong> </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef> E-mail </th>
+          <td mat-cell *matCellDef="let contact"> {{ contact.email }} </td>
+        </ng-container>
+
+        <!-- CreatedAt Column -->
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef> Criado em </th>
+          <td mat-cell *matCellDef="let contact"> {{ contact.createdAt | date : 'dd/MM/yyyy HH:mm' }} </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="text-end"> Ações </th>
+          <td mat-cell *matCellDef="let contact" class="text-end">
+            <button mat-icon-button color="primary" [routerLink]="['edit', contact.id]">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="confirmDelete(contact)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <div class="cards-mobile d-md-none">
+      @for (contact of contacts; track contact.id) {
+        <mat-card class="mb-3">
+          <mat-card-header>
+            <mat-card-title>{{ contact.name }}</mat-card-title>
+            <mat-card-subtitle>#{{ contact.id }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content class="mt-2">
+            <p><strong>E-mail:</strong> {{ contact.email }}</p>
+            <p><strong>Criado em:</strong> {{ contact.createdAt | date : 'dd/MM/yyyy HH:mm' }}</p>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-button color="primary" [routerLink]="['edit', contact.id]">
+              <mat-icon>edit</mat-icon> EDITAR
+            </button>
+            <button mat-button color="warn" (click)="confirmDelete(contact)">
+              <mat-icon>delete</mat-icon> DELETAR
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  } @else {
+    <div class="empty-message">
+      Nenhum contato encontrado.
+    </div>
+  }
 </div>
-
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th>#Id</th>
-      <th>Nome</th>
-      <th>Email</th>
-      <th>Criado em</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (contact of contacts; track contact.id) {
-    <tr>
-      <td>{{contact.id}}</td>
-      <td>{{contact.name}}</td>
-      <td>{{contact.email}}</td>
-      <td>{{contact.createdAt | date : 'dd/MM/yyyy HH:mm'}}</td>
-      <td class="text-end">
-        <div class="btn-group">
-          <button class="btn btn-primary" [routerLink]="['edit',contact.id]">
-            Editar
-          </button>
-          <button class="btn btn-danger" (click)="confirmDelete(contact)">
-            Deletar
-          </button>
-      </div>
-      </td>
-    </tr>
-    }
-  </tbody>
-</table>

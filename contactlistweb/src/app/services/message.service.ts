@@ -1,37 +1,27 @@
-import { Injectable } from '@angular/core';
-import Swal from 'sweetalert2';
+import { inject, Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
+  private snackBar = inject(MatSnackBar);
 
-  public static sucessMessage(){
-    Swal.fire({
-      title: "Finalizado!",
-      text: "Operação realizada com sucesso!",
-      icon: "success"
+  successMessage(message: string = 'Operação realizada com sucesso!'): void {
+    this.snackBar.open(message, 'X', {
+      duration: 3000,
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      panelClass: ['snackbar-success']
     });
   }
 
-  public static errorDeleteMessage(item: string){
-    const errorMessage = `Erro ao deletar ${item}`;
-    Swal.fire({
-      icon: "error",
-      title: (errorMessage),
-      text: "Operação não realizada!",
-      footer: ''
+  errorMessage(message: string = 'Operação não realizada.'): void {
+    this.snackBar.open(message, 'X', {
+      duration: 4000,
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      panelClass: ['snackbar-error']
     });
   }
-
-  public static errorMessage(){
-    Swal.fire({
-      icon: "error",
-      title: ("Falha ao realizar operação"),
-      text: "Operação não realizada!",
-      footer: ''
-    });
-  }
-
-
 }
