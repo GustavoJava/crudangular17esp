@@ -44,8 +44,8 @@ public class ContactService {
 
 	public ContactDTO update(ContactDTO contactDTO, Integer id) {
 		return this.contactRepository.findById(id).map(contactUpdated -> {
-			contactUpdated.setName(contactDTO.name());
-			contactUpdated.setEmail(contactDTO.email().toLowerCase());
+			contactUpdated.setName (contactDTO.getName());
+			contactUpdated.setEmail(contactDTO.getEmail().toLowerCase());
 			return this.contactMapper.toDTO(contactRepository.save(contactUpdated));
 		}).orElseThrow(()-> new RecordNotFoundException(id));
 

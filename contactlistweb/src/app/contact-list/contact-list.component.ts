@@ -45,6 +45,8 @@ export default class ContactListComponent implements OnInit {
     this.contactService.list().subscribe({
       next: (contacts: ContactDTO[]) => {
         this.contacts = contacts;
+        console.log('contacts ',this.contacts);
+
       },
       error: (err: HttpErrorResponse) => {
         console.error('Erro ao carregar contatos', err);
