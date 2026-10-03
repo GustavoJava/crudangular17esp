@@ -32,6 +32,9 @@
           @if (form.get('name')?.hasError('required')) {
           <mat-error>Nome obrigatório</mat-error>
           }
+          @if (form.get('name')?.hasError('minlength')) {
+          <mat-error>O nome deve ter no mínimo 3 caracteres</mat-error>
+          }
         </mat-form-field>
 
         <!-- Campo E-mail -->

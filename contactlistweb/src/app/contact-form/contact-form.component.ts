@@ -38,7 +38,6 @@ export const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   styleUrl: './contact-form.component.scss',
 })
 export default class ContactFormComponent implements OnInit {
-
   private contactService = inject(ContactService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -69,7 +68,7 @@ export default class ContactFormComponent implements OnInit {
   initForm(): void {
     this.form = this.formBuilder.group({
       id: [''],
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.pattern(EMAIL_PATTERN)]],
       createdAt: [''],
     });
