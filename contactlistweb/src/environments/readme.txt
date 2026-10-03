@@ -8,7 +8,8 @@ seu IP ([http://192.168.100.4:8080/api](http://192.168.100.4:8080/api)) e
 execute
 ng serve --host 0.0.0.0
 
-
+token:
+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
 ===============================================
 
 qual seria melhor forma de fazer um filtro tanto no spring boot e no angular front-end? segue:
