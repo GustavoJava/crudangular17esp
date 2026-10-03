@@ -8,9 +8,9 @@ seu IP ([http://192.168.100.4:8080/api](http://192.168.100.4:8080/api)) e
 execute
 ng serve --host 0.0.0.0
 
-
+cep:
+https://viacep.com.br/ws/01001000/json/
 ===============================================
-
 qual seria melhor forma de fazer um filtro tanto no spring boot e no angular front-end? segue:
 
 import { DatePipe } from '@angular/common';
