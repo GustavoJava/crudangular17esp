@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,26 +36,25 @@ public class ContactController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ContactDTO> findById(@PathVariable Integer id) {
-	    ContactDTO contactDTO = contactService.findById(id);
-	    return ResponseEntity.ok(contactDTO);
+		ContactDTO contactDTO = contactService.findById(id);
+		return ResponseEntity.ok(contactDTO);
 	}
 
 	@PostMapping
 	public ResponseEntity<ContactDTO> create(@Valid @RequestBody ContactDTO contactoDTO) {
-	    ContactDTO savedContact = contactService.create(contactoDTO);
-	    return ResponseEntity.status(HttpStatus.CREATED).body(savedContact);
+		ContactDTO savedContact = contactService.create(contactoDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(savedContact);
 	}
 
 	@PutMapping(value = "{id}")
-	public ResponseEntity<ContactDTO> update(@PathVariable Integer id,
-	                                         @Validated @RequestBody ContactDTO contactoDTO) {
-	    ContactDTO updatedContact = this.contactService.update(contactoDTO, id);
-	    return ResponseEntity.ok(updatedContact); // Retorna status 200 OK com o DTO no body
+	public ResponseEntity<ContactDTO> update(@PathVariable Integer id, @Valid @RequestBody ContactDTO contactoDTO) {
+		ContactDTO updatedContact = this.contactService.update(contactoDTO, id);
+		return ResponseEntity.ok(updatedContact); // Retorna status 200 OK com o DTO no body
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-	    this.contactService.delete(id);
-	    return ResponseEntity.noContent().build(); // Retorna status 204 No Content sem corpo
+		this.contactService.delete(id);
+		return ResponseEntity.noContent().build(); // Retorna status 204 No Content sem corpo
 	}
 }
