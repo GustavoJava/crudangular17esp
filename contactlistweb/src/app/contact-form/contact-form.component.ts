@@ -1,27 +1,21 @@
-import { HttpErrorResponse, HttpClient } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Observable } from 'rxjs';
-
-// Imports do Angular Material
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatIcon } from '@angular/material/icon';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Observable } from 'rxjs';
 
 import { ContactDTO } from '../model/ContactDTO';
+import { EnderecoDTO } from '../model/EnderecoDTO';
 import { ContactService } from '../services/contact.service';
+import { EnderecoService } from '../services/endereco.service';
 import { MessageService } from '../services/message.service';
-
-export const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+import { CEP_PATTERN, EMAIL_PATTERN } from '../shared/utils/constants';
 
 @Component({
   selector: 'app-contact-form',
@@ -40,12 +34,13 @@ export const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   styleUrl: './contact-form.component.scss',
 })
 export default class ContactFormComponent implements OnInit {
+
   private contactService = inject(ContactService);
+  private enderecoService = inject(EnderecoService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private formBuilder = inject(FormBuilder);
   private messageService = inject(MessageService);
-  private http = inject(HttpClient);
 
   form!: FormGroup;
   contact?: ContactDTO;
@@ -76,7 +71,7 @@ export default class ContactFormComponent implements OnInit {
       createdAt: [''],
       endereco: this.formBuilder.group({
         id: [''],
-        cep: ['', [Validators.required]],
+        cep: ['', [Validators.required, Validators.pattern(CEP_PATTERN)]],
         logradouro: ['', [Validators.required]],
         complemento: [''],
         unidade: [''],
@@ -100,32 +95,22 @@ export default class ContactFormComponent implements OnInit {
       return;
     }
 
-    this.http.get<any>(`https://viacep.com.br/ws/${cep}/json/`).subscribe({
-      next: (dados) => {
-        if (!dados.erro) {
-          this.form.get('endereco')?.patchValue({
-            logradouro: dados.logradouro,
-            bairro: dados.bairro,
-            localidade: dados.localidade,
-            uf: dados.uf,
-            estado: dados.estado,
-            regiao: dados.regiao || 'Centro-Oeste',
-            ibge: dados.ibge,
-            gia: dados.gia,
-            ddd: dados.ddd,
-            siafi: dados.siafi
-          });
+    this.enderecoService.findByCep(cep).subscribe({
+      next: (endereco: EnderecoDTO) => {
+        if (!endereco.erro) {
+          this.form.get('endereco')?.patchValue(endereco);
         } else {
-          this.messageService.errorMessage('CEP não encontrado.');
+          this.messageService.errorMessage(`CEP ${cep} não encontrado!`);
         }
       },
       error: () => {
-        this.messageService.errorMessage('Erro ao consultar o CEP.');
+        this.messageService.errorMessage(`Erro ao consultar o CEP ${cep}.`);
       }
     });
   }
 
   save(): void {
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

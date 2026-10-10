@@ -13,4 +13,5 @@ export interface EnderecoDTO {
   gia?: string;
   ddd: string;
   siafi?: string;
+  erro?:string
 }

@@ -29,7 +29,7 @@
 
           <!-- ABA 1: DADOS PESSOAIS -->
           <mat-tab label="Dados Pessoais">
-            <div class="pt-3">
+            <div class="pt-4">
               <!-- Campo Nome -->
               <mat-form-field appearance="outline" class="w-100 mb-2">
                 <mat-label>Nome</mat-label>
@@ -58,13 +58,20 @@
 
           <!-- ABA 2: ENDEREÇO -->
           <mat-tab label="Endereço">
-            <div class="pt-3" formGroupName="endereco">
-
+            <div class="pt-4" formGroupName="endereco">
               <div class="row">
                 <div class="col-md-4">
                   <mat-form-field appearance="outline" class="w-100 mb-2">
                     <mat-label>CEP</mat-label>
-                    <input matInput placeholder="00000-000" formControlName="cep" (blur)="consultarCep($event)" maxlength="9" />
+                    <input matInput placeholder="00000-000" formControlName="cep"
+                           (blur)="consultarCep($event)"
+                           maxlength="9" />
+                      @if (form.get('endereco.cep')?.hasError('required')) {
+                        <mat-error>O CEP é obrigatório</mat-error>
+                      }
+                      @if (form.get('endereco.cep')?.hasError('pattern')) {
+                        <mat-error>CEP inválido (Use 00000-000 ou 00000000)</mat-error>
+                      }
                   </mat-form-field>
                 </div>
                 <div class="col-md-8">

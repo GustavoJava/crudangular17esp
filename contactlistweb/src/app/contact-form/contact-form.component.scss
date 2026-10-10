@@ -4,6 +4,25 @@ margin-left: 5px;
 margin-bottom: 5px !important;
 }
 
+/* Adiciona um respiro logo abaixo da barra de navegação das abas do Angular Material */
+.mat-mdc-tab-body-wrapper {
+  margin-top: 12px;
+}
+
+/* Adiciona espaçamento superior real logo abaixo das abas do Angular Material */
+::ng-deep {
+  .mat-mdc-tab-body-content {
+    padding-top: 16px !important;
+  }
+}
+
+/* Dá um respiro no topo dos campos que ficam logo abaixo das abas */
+mat-tab-group {
+  .pt-3 {
+    padding-top: 1rem !important;
+  }
+}
+
 .form-container {
   max-width: 550px;
   margin: 2rem auto;
