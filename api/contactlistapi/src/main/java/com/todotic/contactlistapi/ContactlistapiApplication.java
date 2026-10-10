@@ -23,50 +23,56 @@ public class ContactlistapiApplication {
 		SpringApplication.run(ContactlistapiApplication.class, args);
 	}
 	
-	@Bean
-	CommandLineRunner runner(ContactRepository contactRepository, EnderecoRepository enderecoRepository) {
-		return args -> {
-			// Massa de teste para Endereços
-			Endereco endSP = new Endereco(
-				null, "01310-100", "Avenida Paulista", "Conjunto 501", "Torre A", 
-				"Bela Vista", "São Paulo", "SP", "São Paulo", "Sudeste", 
-				"3550308", "1004", "11", "7107"
-			);
-			
-			Endereco endRJ = new Endereco(
-				null, "22041-001", "Avenida Atlântica", "Apto 802", null, 
-				"Copacabana", "Rio de Janeiro", "RJ", "Rio de Janeiro", "Sudeste", 
-				"3304557", "6001", "21", "6001"
-			);
-			
-			Endereco endMG = new Endereco(
-				null, "30130-100", "Avenida Afonso Pena", "Bloco B - Sala 12", null, 
-				"Boa Viagem", "Belo Horizonte", "MG", "Minas Gerais", "Sudeste", 
-				"3106200", "0620", "31", "4123"
-			);
-			
-			Endereco endDF = new Endereco(
-				null, "70040-010", "Eixo Monumental", "Via N1", "Lote 2", 
-				"Zona Cívico-Administrativa", "Brasília", "DF", "Distrito Federal", "Centro-Oeste", 
-				"5300108", null, "61", "9701"
-			);
-
-			// Salva os endereços antes de associar aos contatos
-			enderecoRepository.saveAll(List.of(endSP, endRJ, endMG, endDF));
-
-			// Massa de teste para Contatos
-			List<Contact> contatos = List.of(
-				new Contact(null, "Carlos Eduardo Silva", "carlos.silva@email.com", DateUtils.getHoje(), endSP),
-				new Contact(null, "Mariana Oliveira", "mariana.oliveira@email.com", DateUtils.getHoje(), endRJ),
-				new Contact(null, "Fernando Souza", "fernando.souza@email.com", DateUtils.getHoje(), endMG),
-				new Contact(null, "Beatriz Mendes", "beatriz.mendes@email.com", DateUtils.getHoje(), endDF),
-				new Contact(null, "Lucas Pereira", "lucas.pereira@email.com", DateUtils.getHoje(), endSP), 
-				new Contact(null, "Camila Rodrigues", "camila.rodrigues@email.com", DateUtils.getHoje(), endRJ) 
-			);
-
-			contactRepository.saveAll(contatos);	
-		};
-	}
+//	@Bean
+//	CommandLineRunner runner(ContactRepository contactRepository, EnderecoRepository enderecoRepository) {
+//		return args -> {
+//			// Massa de teste para Endereços
+//			Endereco endSP = new Endereco(
+//				null, "01310-100", "Avenida Paulista", "Conjunto 501", "Torre A", 
+//				"Bela Vista", "São Paulo", "SP", "São Paulo", "Sudeste", 
+//				"3550308", "1004", "11", "7107"
+//			);
+//			
+//			Endereco endRJ = new Endereco(
+//				null, "22041-001", "Avenida Atlântica", "Apto 802", null, 
+//				"Copacabana", "Rio de Janeiro", "RJ", "Rio de Janeiro", "Sudeste", 
+//				"3304557", "6001", "21", "6001"
+//			);
+//			
+//			Endereco endMG = new Endereco(
+//				null, "30130-100", "Avenida Afonso Pena", "Bloco B - Sala 12", null, 
+//				"Boa Viagem", "Belo Horizonte", "MG", "Minas Gerais", "Sudeste", 
+//				"3106200", "0620", "31", "4123"
+//			);
+//			
+//			Endereco endDF = new Endereco(
+//				null, "70040-010", "Eixo Monumental", "Via N1", "Lote 2", 
+//				"Zona Cívico-Administrativa", "Brasília", "DF", "Distrito Federal", "Centro-Oeste", 
+//				"5300108", null, "61", "9701"
+//			);
+//
+//			// Salva os endereços e captura as instâncias gerenciadas retornadas pelo saveAll
+//			List<Endereco> enderecosSalvos = enderecoRepository.saveAll(List.of(endSP, endRJ, endMG, endDF));
+//			
+//			// Atribui as instâncias gerenciadas (com ID gerado e contexto atualizado do Hibernate)
+//			Endereco eSP = enderecosSalvos.get(0);
+//			Endereco eRJ = enderecosSalvos.get(1);
+//			Endereco eMG = enderecosSalvos.get(2);
+//			Endereco eDF = enderecosSalvos.get(3);
+//
+//			// Massa de teste para Contatos usando as referências gerenciadas
+//			List<Contact> contatos = List.of(
+//				new Contact(null, "Carlos Eduardo Silva", "carlos.silva@email.com", DateUtils.getHoje(), eSP),
+//				new Contact(null, "Mariana Oliveira", "mariana.oliveira@email.com", DateUtils.getHoje(), eRJ),
+//				new Contact(null, "Fernando Souza", "fernando.souza@email.com", DateUtils.getHoje(), eMG),
+//				new Contact(null, "Beatriz Mendes", "beatriz.mendes@email.com", DateUtils.getHoje(), eDF),
+//				new Contact(null, "Lucas Pereira", "lucas.pereira@email.com", DateUtils.getHoje(), eSP), 
+//				new Contact(null, "Camila Rodrigues", "camila.rodrigues@email.com", DateUtils.getHoje(), eRJ) 
+//			);
+//
+//			contactRepository.saveAll(contatos);	
+//		};
+//	}
 	
 	@Bean
 	ModelMapper modelMapper() {
