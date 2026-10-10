@@ -1,1 +1,7 @@
 .metadata
+# Editor swap/backup files
+*.kate-swp
+.*.kate-swp
+# Postman local files
+.postman/
+postman/
