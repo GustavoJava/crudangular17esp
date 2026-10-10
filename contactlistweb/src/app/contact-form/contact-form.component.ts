@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -14,11 +14,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatIcon } from '@angular/material/icon';
 
 import { ContactDTO } from '../model/ContactDTO';
 import { ContactService } from '../services/contact.service';
 import { MessageService } from '../services/message.service';
-import { MatIcon } from '@angular/material/icon';
 
 export const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -32,6 +33,7 @@ export const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatTabsModule,
     MatIcon,
   ],
   templateUrl: './contact-form.component.html',
@@ -43,6 +45,7 @@ export default class ContactFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private formBuilder = inject(FormBuilder);
   private messageService = inject(MessageService);
+  private http = inject(HttpClient);
 
   form!: FormGroup;
   contact?: ContactDTO;
@@ -71,6 +74,54 @@ export default class ContactFormComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.pattern(EMAIL_PATTERN)]],
       createdAt: [''],
+      endereco: this.formBuilder.group({
+        id: [''],
+        cep: ['', [Validators.required]],
+        logradouro: ['', [Validators.required]],
+        complemento: [''],
+        unidade: [''],
+        bairro: ['', [Validators.required]],
+        localidade: ['', [Validators.required]],
+        uf: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
+        estado: ['', [Validators.required]],
+        regiao: ['', [Validators.required]],
+        ibge: [''],
+        gia: [''],
+        ddd: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
+        siafi: ['']
+      })
+    });
+  }
+
+  consultarCep(event: any): void {
+    const cep = event.target.value.replace(/\D/g, '');
+
+    if (cep.length !== 8) {
+      return;
+    }
+
+    this.http.get<any>(`https://viacep.com.br/ws/${cep}/json/`).subscribe({
+      next: (dados) => {
+        if (!dados.erro) {
+          this.form.get('endereco')?.patchValue({
+            logradouro: dados.logradouro,
+            bairro: dados.bairro,
+            localidade: dados.localidade,
+            uf: dados.uf,
+            estado: dados.estado,
+            regiao: dados.regiao || 'Centro-Oeste',
+            ibge: dados.ibge,
+            gia: dados.gia,
+            ddd: dados.ddd,
+            siafi: dados.siafi
+          });
+        } else {
+          this.messageService.errorMessage('CEP não encontrado.');
+        }
+      },
+      error: () => {
+        this.messageService.errorMessage('Erro ao consultar o CEP.');
+      }
     });
   }
 

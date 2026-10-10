@@ -25,32 +25,114 @@
 
       <form [formGroup]="form" (ngSubmit)="save()">
 
-        <!-- Campo Nome -->
-        <mat-form-field appearance="outline" class="w-100 mb-2">
-          <mat-label>Nome</mat-label>
-          <input matInput id="name" type="text" placeholder="Digite o nome" formControlName="name" />
-          @if (form.get('name')?.hasError('required')) {
-          <mat-error>Nome obrigatório</mat-error>
-          }
-          @if (form.get('name')?.hasError('minlength')) {
-          <mat-error>O nome deve ter no mínimo 3 caracteres</mat-error>
-          }
-        </mat-form-field>
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="mb-3">
 
-        <!-- Campo E-mail -->
-        <mat-form-field appearance="outline" class="w-100 mb-2">
-          <mat-label>E-mail</mat-label>
-          <input matInput id="email" type="email" placeholder="exemplo@gmail.com" formControlName="email" />
-          @if (form.get('email')?.hasError('required')) {
-          <mat-error>E-mail é obrigatório</mat-error>
-          }
-          @if (form.get('email')?.hasError('pattern')) {
-          <mat-error>Informe um e-mail válido (ex: exemplo&#64;gmail.com)</mat-error>
-          }
-        </mat-form-field>
+          <!-- ABA 1: DADOS PESSOAIS -->
+          <mat-tab label="Dados Pessoais">
+            <div class="pt-3">
+              <!-- Campo Nome -->
+              <mat-form-field appearance="outline" class="w-100 mb-2">
+                <mat-label>Nome</mat-label>
+                <input matInput id="name" type="text" placeholder="Digite o nome" formControlName="name" />
+                @if (form.get('name')?.hasError('required')) {
+                <mat-error>Nome obrigatório</mat-error>
+                }
+                @if (form.get('name')?.hasError('minlength')) {
+                <mat-error>O nome deve ter no mínimo 3 caracteres</mat-error>
+                }
+              </mat-form-field>
+
+              <!-- Campo E-mail -->
+              <mat-form-field appearance="outline" class="w-100 mb-2">
+                <mat-label>E-mail</mat-label>
+                <input matInput id="email" type="email" placeholder="exemplo&#64;gmail.com" formControlName="email" />
+                @if (form.get('email')?.hasError('required')) {
+                <mat-error>E-mail é obrigatório</mat-error>
+                }
+                @if (form.get('email')?.hasError('pattern')) {
+                <mat-error>Informe um e-mail válido</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </mat-tab>
+
+          <!-- ABA 2: ENDEREÇO -->
+          <mat-tab label="Endereço">
+            <div class="pt-3" formGroupName="endereco">
+
+              <div class="row">
+                <div class="col-md-4">
+                  <mat-form-field appearance="outline" class="w-100 mb-2">
+                    <mat-label>CEP</mat-label>
+                    <input matInput placeholder="00000-000" formControlName="cep" (blur)="consultarCep($event)" maxlength="9" />
+                  </mat-form-field>
+                </div>
+                <div class="col-md-8">
+                  <mat-form-field appearance="outline" class="w-100 mb-2">
+                    <mat-label>Logradouro</mat-label>
+                    <input matInput placeholder="Ex: Avenida Goiás" formControlName="logradouro" />
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field appearance="outline" class="w-100 mb-2">
+                    <mat-label>Complemento</mat-label>
+                    <input matInput placeholder="Apto, Bloco..." formControlName="complemento" />
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field appearance="outline" class="w-100 mb-2">
+                    <mat-label>Bairro</mat-label>
+                    <input matInput placeholder="Ex: Setor Central" formControlName="bairro" />
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-5">
+                  <mat-form-field appearance="outline" class="w-100 mb-2">
+                    <mat-label>Localidade (Cidade)</mat-label>
+                    <input matInput placeholder="Ex: Goiânia" formControlName="localidade" />
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field appearance="outline" class="w-100 mb-2">
+                    <mat-label>UF</mat-label>
+                    <input matInput placeholder="GO" maxlength="2" formControlName="uf" />
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field appearance="outline" class="w-100 mb-2">
+                    <mat-label>Estado</mat-label>
+                    <input matInput placeholder="Goiás" formControlName="estado" />
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field appearance="outline" class="w-100 mb-2">
+                    <mat-label>Região</mat-label>
+                    <input matInput placeholder="Centro-Oeste" formControlName="regiao" />
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field appearance="outline" class="w-100 mb-2">
+                    <mat-label>DDD</mat-label>
+                    <input matInput placeholder="62" maxlength="2" formControlName="ddd" />
+                  </mat-form-field>
+                </div>
+              </div>
+
+            </div>
+          </mat-tab>
+
+        </mat-tab-group>
 
         <!-- Ações do Formulário -->
-        <div class="actions">
+        <div class="actions mt-3">
           <button mat-stroked-button type="button" routerLink="/">
             <mat-icon>arrow_back</mat-icon>
             Cancelar
