@@ -1,0 +1,2 @@
+export const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+export const CEP_PATTERN = /^\d{5}-?\d{3}$/;

@@ -5,10 +5,13 @@
       <mat-icon>add</mat-icon> Novo Contato
     </button>
   </div>
-  @if (contacts.length > 0 ) {
-    <span>{{contacts.length}} pessoa(s) cadastrada(s)</span>
-  }
-  @if (contacts.length > 0) {
+
+    @if (contacts.length > 0) {
+      <span>{{contacts.length}} pessoa(s) cadastrada(s)</span>
+    }
+
+    @if (contacts.length > 0) {
+    <!-- TABELA DESKTOP -->
     <div class="table-responsive d-none d-md-block mat-elevation-z2">
       <table mat-table [dataSource]="contacts" class="w-100">
 
@@ -40,10 +43,18 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef class="text-end"> Ações </th>
           <td mat-cell *matCellDef="let contact" class="text-end">
-            <button mat-icon-button color="primary" [routerLink]="['edit', contact.id]">
+            <!-- BOTÃO VISUALIZAR (Adicionado no Desktop) -->
+            <button mat-icon-button color="accent" [routerLink]="['/view', contact.id]" matTooltip="Visualizar">
+              <mat-icon>visibility</mat-icon>
+            </button>
+
+            <!-- BOTÃO EDITAR -->
+            <button mat-icon-button color="primary" [routerLink]="['/edit', contact.id]" matTooltip="Editar">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" (click)="confirmDelete(contact)">
+
+            <!-- BOTÃO DELETAR -->
+            <button mat-icon-button color="warn" (click)="confirmDelete(contact)" matTooltip="Excluir">
               <mat-icon>delete</mat-icon>
             </button>
           </td>
@@ -54,6 +65,7 @@
       </table>
     </div>
 
+    <!-- CARDS MOBILE -->
     <div class="cards-mobile d-md-none">
       @for (contact of contacts; track contact.id) {
         <mat-card class="mb-3">
@@ -61,14 +73,22 @@
             <mat-card-title>{{ contact.name }}</mat-card-title>
             <mat-card-subtitle>#{{ contact.id }}</mat-card-subtitle>
           </mat-card-header>
+
           <mat-card-content class="mt-2">
             <p><strong>E-mail:</strong> {{ contact.email }}</p>
             <p><strong>Criado em:</strong> {{ contact.createdAt | date : 'dd/MM/yyyy HH:mm' }}</p>
           </mat-card-content>
+
           <mat-card-actions align="end">
-            <button mat-button color="primary" [routerLink]="['edit', contact.id]">
+            <!-- BOTÃO VISUALIZAR (Corrigido para mat-button no Mobile) -->
+            <button mat-button color="accent" [routerLink]="['/view', contact.id]">
+              <mat-icon>visibility</mat-icon> VER
+            </button>
+
+            <button mat-button color="primary" [routerLink]="['/edit', contact.id]">
               <mat-icon>edit</mat-icon> EDITAR
             </button>
+
             <button mat-button color="warn" (click)="confirmDelete(contact)">
               <mat-icon>delete</mat-icon> DELETAR
             </button>

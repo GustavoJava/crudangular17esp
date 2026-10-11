@@ -11,4 +11,3 @@ ng serve --host 0.0.0.0
 cep:
 https://viacep.com.br/ws/01001000/json/
 ===============================================
-https://gemini.google.com/app/77aaa12ce94925ef
