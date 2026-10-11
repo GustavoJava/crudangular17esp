@@ -1,6 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -34,7 +39,6 @@ import { CEP_PATTERN, EMAIL_PATTERN } from '../shared/utils/constants';
   styleUrl: './contact-form.component.scss',
 })
 export default class ContactFormComponent implements OnInit {
-
   private contactService = inject(ContactService);
   private enderecoService = inject(EnderecoService);
   private router = inject(Router);
@@ -46,15 +50,26 @@ export default class ContactFormComponent implements OnInit {
   contact?: ContactDTO;
   errors: string[] = [];
 
+  isVisualizar = false;
+  acao: string | undefined;
+
   ngOnInit(): void {
     this.initForm();
+
     const id = this.route.snapshot.params['id'];
+    this.acao = this.route.snapshot.data['acao'];
+    this.isVisualizar = this.acao === 'view';
 
     if (id) {
-      this.contactService.get(id).subscribe({
+      this.contactService.findById(id).subscribe({
         next: (response) => {
           this.contact = response;
           this.form.patchValue(this.contact);
+
+          if (this.isVisualizar) {
+            this.form.disable();
+          }
+
         },
         error: (err: HttpErrorResponse) => {
           console.error(err.error);
@@ -105,12 +120,11 @@ export default class ContactFormComponent implements OnInit {
       },
       error: () => {
         this.messageService.errorMessage(`Erro ao consultar o CEP ${cep}.`);
-      }
+      },
     });
   }
 
   save(): void {
-
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

@@ -18,7 +18,7 @@ export class ContactService {
    return this.http.get<ContactDTO[]>(this.BASE_URL);
   }
 
-  get(id: number): Observable<ContactDTO> {
+  findById(id: number): Observable<ContactDTO> {
     return this.http.get<ContactDTO>(`${this.BASE_URL}/${id}`);
   }
 

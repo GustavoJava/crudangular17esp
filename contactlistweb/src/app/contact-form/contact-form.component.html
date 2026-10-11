@@ -65,13 +65,13 @@
                     <mat-label>CEP</mat-label>
                     <input matInput placeholder="00000-000" formControlName="cep"
                            (blur)="consultarCep($event)"
-                           maxlength="9" />
-                      @if (form.get('endereco.cep')?.hasError('required')) {
-                        <mat-error>O CEP é obrigatório</mat-error>
-                      }
-                      @if (form.get('endereco.cep')?.hasError('pattern')) {
-                        <mat-error>CEP inválido (Use 00000-000 ou 00000000)</mat-error>
-                      }
+                            maxlength="9" />
+                    @if (form.get('endereco.cep')?.hasError('required')) {
+                      <mat-error>O CEP é obrigatório</mat-error>
+                    }
+                    @if (form.get('endereco.cep')?.hasError('pattern')) {
+                      <mat-error>CEP inválido (Use 00000-000 ou 00000000)</mat-error>
+                    }
                   </mat-form-field>
                 </div>
                 <div class="col-md-8">
@@ -137,22 +137,23 @@
           </mat-tab>
 
         </mat-tab-group>
-
         <!-- Ações do Formulário -->
         <div class="actions mt-3">
           <button mat-stroked-button type="button" routerLink="/">
             <mat-icon>arrow_back</mat-icon>
-            Cancelar
+             Cancelar
           </button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-            @if(contact) {
-            <mat-icon>save</mat-icon>
-            Atualizar
-            }@else {
-            <mat-icon>add</mat-icon>
-            Criar
+          @if(!isVisualizar){
+            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+              @if(contact) {
+                <mat-icon>save</mat-icon>
+                  Atualizar
+              }@else {
+              <mat-icon>add</mat-icon>
+                  Salvar
             }
           </button>
+          }
         </div>
 
       </form>
