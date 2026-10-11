@@ -4,11 +4,62 @@ margin-left: 5px;
 margin-bottom: 5px !important;
 }
 
+/* Adiciona um respiro logo abaixo da barra de navegação das abas do Angular Material */
+.mat-mdc-tab-body-wrapper {
+  margin-top: 12px;
+}
+
+/* Adiciona espaçamento superior real logo abaixo das abas do Angular Material */
+::ng-deep {
+  .mat-mdc-tab-body-content {
+    padding-top: 16px !important;
+  }
+}
+
+/* Dá um respiro no topo dos campos que ficam logo abaixo das abas */
+mat-tab-group {
+  .pt-3 {
+    padding-top: 1rem !important;
+  }
+}
+
 .form-container {
   max-width: 550px;
   margin: 2rem auto;
   padding: 0 1rem;
 }
+
+//Form disabled
+/* Melhora o visual do formulário no modo de visualização (desativado) */
+.mat-mdc-form-field.mat-form-field-disabled {
+  opacity: 1 !important;
+
+  /* Deixa a bordinha mais suave e discreta */
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: rgba(0, 0, 0, 0.15) !important;
+  }
+
+  /* Deixa o fundo levemente acinzentado para destacar que é leitura, mas sem ficar fosco */
+  .mat-mdc-text-field-wrapper {
+    background-color: rgba(0, 0, 0, 0.02) !important;
+    border-radius: 4px;
+  }
+
+  /* Mantém o texto bem nítido e escuro */
+  input.mat-mdc-input-element:disabled,
+  textarea.mat-mdc-input-element:disabled {
+    color: rgba(0, 0, 0, 0.87) !important;
+    -webkit-text-fill-color: rgba(0, 0, 0, 0.87) !important;
+  }
+
+  /* Mantém o label (título do campo) legível */
+  .mdc-floating-label {
+    color: rgba(0, 0, 0, 0.6) !important;
+  }
+}
+//Form disabled-end
 
 .actions {
   display: flex;

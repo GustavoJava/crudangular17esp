@@ -12,6 +12,7 @@ import { ContactDTO } from '../model/ContactDTO';
 import { ContactService } from '../services/contact.service';
 import { MessageService } from '../services/message.service';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-contact-list',
@@ -23,7 +24,8 @@ import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/conf
     MatButtonModule,
     MatCardModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule
   ],
   templateUrl: './contact-list.component.html',
   styleUrl: './contact-list.component.scss'
