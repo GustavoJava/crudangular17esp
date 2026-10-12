@@ -97,3 +97,21 @@ mat-tab-group {
     transition: all 0.3s ease;
   }
 }
+
+//form disabled
+/* Torna a cor do texto nítida em inputs desabilitados */
+.mat-mdc-form-field.mat-form-field-disabled .mat-mdc-input-element {
+  color: rgba(0, 0, 0, 0.87) !important; /* Cor do texto em modo claro */
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.87) !important;
+}
+
+/* Torna a label (rótulo) e o outline visíveis e nítidos */
+.mat-mdc-form-field.mat-form-field-disabled .mdc-floating-label {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.mat-mdc-form-field.mat-form-field-disabled .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-form-field-disabled .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-form-field-disabled .mdc-notched-outline__trailing {
+  border-color: rgba(0, 0, 0, 0.38) !important;
+}

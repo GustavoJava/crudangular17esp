@@ -12,15 +12,15 @@
 
     <mat-card-content class="mt-3">
       @if (form) {
-      @if(errors.length) {
-      <div class="alert-danger-custom">
-        <p class="fw-bold mb-1">Preencha os dados corretamente!</p>
-        <ul>
-          @for(error of errors; track error){
-          <li>{{ error }}</li>
-          }
-        </ul>
-      </div>
+        @if(errors.length) {
+        <div class="alert-danger-custom">
+          <p class="fw-bold mb-1">Preencha os dados corretamente!</p>
+          <ul>
+            @for(error of errors; track error){
+            <li>{{ error }}</li>
+            }
+          </ul>
+        </div>
       }
 
       <form [formGroup]="form" (ngSubmit)="save()">
@@ -78,6 +78,9 @@
                   <mat-form-field appearance="outline" class="w-100 mb-2">
                     <mat-label>Logradouro</mat-label>
                     <input matInput placeholder="Ex: Avenida Goiás" formControlName="logradouro" />
+                    @if (form.get('endereco.logradouro')?.hasError('required')) {
+                      <mat-error>Logradouro é obrigatório</mat-error>
+                    }
                   </mat-form-field>
                 </div>
               </div>
@@ -87,12 +90,18 @@
                   <mat-form-field appearance="outline" class="w-100 mb-2">
                     <mat-label>Complemento</mat-label>
                     <input matInput placeholder="Apto, Bloco..." formControlName="complemento" />
+                    @if (form.get('endereco.complemento')?.hasError('required')) {
+                      <mat-error>O complemento é obrigatório</mat-error>
+                    }
                   </mat-form-field>
                 </div>
                 <div class="col-md-6">
                   <mat-form-field appearance="outline" class="w-100 mb-2">
                     <mat-label>Bairro</mat-label>
                     <input matInput placeholder="Ex: Setor Central" formControlName="bairro" />
+                    @if (form.get('endereco.bairro')?.hasError('required')) {
+                      <mat-error>O Bairro é obrigatório</mat-error>
+                    }
                   </mat-form-field>
                 </div>
               </div>
@@ -102,18 +111,27 @@
                   <mat-form-field appearance="outline" class="w-100 mb-2">
                     <mat-label>Localidade (Cidade)</mat-label>
                     <input matInput placeholder="Ex: Goiânia" formControlName="localidade" />
+                     @if (form.get('endereco.localidade')?.hasError('required')) {
+                      <mat-error>Cidade é obrigatório</mat-error>
+                    }
                   </mat-form-field>
                 </div>
                 <div class="col-md-3">
                   <mat-form-field appearance="outline" class="w-100 mb-2">
                     <mat-label>UF</mat-label>
                     <input matInput placeholder="GO" maxlength="2" formControlName="uf" />
+                    @if (form.get('endereco.uf')?.hasError('required')) {
+                      <mat-error>UF é obrigatório</mat-error>
+                    }
                   </mat-form-field>
                 </div>
                 <div class="col-md-4">
                   <mat-form-field appearance="outline" class="w-100 mb-2">
                     <mat-label>Estado</mat-label>
                     <input matInput placeholder="Goiás" formControlName="estado" />
+                    @if (form.get('endereco.estado')?.hasError('required')) {
+                      <mat-error>Estado é obrigatório</mat-error>
+                    }
                   </mat-form-field>
                 </div>
               </div>
@@ -123,12 +141,18 @@
                   <mat-form-field appearance="outline" class="w-100 mb-2">
                     <mat-label>Região</mat-label>
                     <input matInput placeholder="Centro-Oeste" formControlName="regiao" />
+                    @if (form.get('endereco.regiao')?.hasError('required')) {
+                      <mat-error>Estado é obrigatório</mat-error>
+                    }
                   </mat-form-field>
                 </div>
                 <div class="col-md-6">
                   <mat-form-field appearance="outline" class="w-100 mb-2">
                     <mat-label>DDD</mat-label>
                     <input matInput placeholder="62" maxlength="2" formControlName="ddd" />
+                    @if (form.get('endereco.ddd')?.hasError('required')) {
+                      <mat-error>DD é obrigatório</mat-error>
+                    }
                   </mat-form-field>
                 </div>
               </div>
