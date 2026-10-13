@@ -1,22 +1,32 @@
-<h2 mat-dialog-title class="dialog-header">
-  <mat-icon color="warn" class="header-icon">warning</mat-icon>
-  <span>{{ data.title }}</span>
-</h2>
-
-<mat-dialog-content>
-  <p class="dialog-message">{{ data.message }}</p>
-  <div class="item-card">
-    <strong>{{ data.itemName }}</strong>
+<div class="dialog-container">
+  <!-- Cabeçalho -->
+  <div mat-dialog-title class="dialog-header">
+    <div class="icon-badge">
+      <mat-icon color="warn">warning</mat-icon>
+    </div>
+    <span class="dialog-title-text">{{ data.title }}</span>
   </div>
-</mat-dialog-content>
 
-<mat-dialog-actions align="end" class="dialog-actions">
-  <button mat-stroked-button [mat-dialog-close]="false" cdkFocusInitial>
-    <mat-icon>close</mat-icon>
-    Não
-  </button>
-  <button mat-raised-button color="warn" [mat-dialog-close]="true">
-    <mat-icon>delete</mat-icon>
-    Sim
-  </button>
-</mat-dialog-actions>
+  <!-- Conteúdo -->
+  <mat-dialog-content class="dialog-content">
+    <p class="dialog-message">{{ data.message }}</p>
+
+    @if (data.itemName) {
+      <div class="item-card">
+        <mat-icon class="item-icon">inventory_2</mat-icon>
+        <span class="item-name">{{ data.itemName }}</span>
+      </div>
+    }
+  </mat-dialog-content>
+
+  <!-- Ações -->
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button [mat-dialog-close]="false" cdkFocusInitial class="btn-cancel">
+      Cancelar
+    </button>
+    <button mat-flat-button color="warn" [mat-dialog-close]="true" class="btn-confirm">
+      <mat-icon>delete</mat-icon>
+      Excluir
+    </button>
+  </mat-dialog-actions>
+</div>
