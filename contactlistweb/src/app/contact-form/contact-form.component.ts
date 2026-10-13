@@ -88,7 +88,7 @@ export default class ContactFormComponent implements OnInit {
         id: [''],
         cep: ['', [Validators.required, Validators.pattern(CEP_PATTERN)]],
         logradouro: ['', [Validators.required]],
-        complemento: [''],
+        complemento: ['', [Validators.required]],
         unidade: [''],
         bairro: ['', [Validators.required]],
         localidade: ['', [Validators.required]],
@@ -125,6 +125,7 @@ export default class ContactFormComponent implements OnInit {
   }
 
   save(): void {
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

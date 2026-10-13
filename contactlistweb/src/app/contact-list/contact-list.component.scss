@@ -4,31 +4,70 @@
   padding: 0 1rem;
 }
 
+.header-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.contacts-count {
+  display: block;
+  margin-bottom: 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* ==========================================================
+   CONFIGURAÇÃO RESPONSIVA (SEM BOOTSTRAP)
+   ========================================================== */
+
+/* 1. Visibilidade Padrão: MOBILE (< 768px) */
+.table-desktop {
+  display: none; /* Esconde a tabela no celular */
+}
+
 .cards-mobile {
-  mat-card {
+  display: block; /* Exibe os cards no celular */
+
+  mat-card.contact-card {
     background-color: #ffffff;
-    border: 1px solid #e0e0e0; /* Mantemos a borda fina, mas a sombra fará o trabalho de destaque */
-    border-radius: 12px;       /* Arredondamento um pouco maior para um look mais moderno */
-    margin-bottom: 20px;       /* Um pouco mais de espaço entre os cards */
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05),
+                0 10px 15px rgba(0, 0, 0, 0.03) !important;
+    transition: all 0.3s ease;
 
-    /* NOVA SOMBRA: Suave e em camadas */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), /* Sombra menor e mais próxima para definição */
-                0 10px 15px rgba(0, 0, 0, 0.03) !important; /* Sombra maior e mais suave para elevação */
+    .card-body {
+      margin-top: 8px;
+      p {
+        margin-bottom: 4px;
+      }
+    }
 
-    /* Mantemos a divisória interna, mas com mais espaço */
     mat-card-actions {
       border-top: 1px solid #f0f0f0;
-      padding: 12px 16px;
+      padding: 8px 12px;
       margin-top: 12px;
     }
 
-    /* Opcional: Efeito visual ao tocar (no mobile) */
     &:active {
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important; /* A sombra diminui, parecendo que o card foi "pressionado" */
-      transform: translateY(1px); /* O card desce levemente */
-      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+      transform: translateY(1px);
     }
+  }
+}
 
-    transition: all 0.3s ease; /* Transição suave para o efeito de toque */
+/* 2. Visibilidade em Telas Maiores: DESKTOP (>= 768px) */
+@media (min-width: 768px) {
+  .table-desktop {
+    display: block; /* Exibe a tabela no desktop */
+    overflow-x: auto;
+    border-radius: 8px;
+  }
+
+  .cards-mobile {
+    display: none; /* Esconde os cards no desktop */
   }
 }

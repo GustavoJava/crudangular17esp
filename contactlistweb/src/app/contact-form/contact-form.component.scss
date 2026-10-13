@@ -1,7 +1,6 @@
-.btn-primary-spacing
-{
-margin-left: 5px;
-margin-bottom: 5px !important;
+.btn-primary-spacing {
+  margin-left: 5px;
+  margin-bottom: 5px !important;
 }
 
 /* Adiciona um respiro logo abaixo da barra de navegação das abas do Angular Material */
@@ -63,24 +62,64 @@ mat-tab-group {
       }
     }
 
-    /* Divisória e ações do formulário */
+    /* ==========================================================
+       RESPONSIVIDADE DO FORMULÁRIO DE ENDEREÇO (FLEXBOX)
+       ========================================================== */
+    .address-container {
+      .form-row {
+        display: flex;
+        flex-direction: column; /* No celular: campos empilhados */
+        gap: 0;
+        width: 100%;
+
+        /* No desktop (a partir de 768px): campos lado a lado */
+        @media (min-width: 768px) {
+          flex-direction: row;
+          gap: 16px;
+        }
+      }
+
+      /* Distribuição proporcional para linhas de 2 itens */
+      .form-row:not(.trio) {
+        mat-form-field {
+          width: 100%;
+          @media (min-width: 768px) {
+            flex: 1;
+          }
+        }
+      }
+
+      /* Distribuição específica para a linha de 3 itens (Cidade, UF, Estado) */
+      .form-row.trio {
+        .flex-cidade { width: 100%; @media (min-width: 768px) { flex: 3; } }
+        .flex-uf     { width: 100%; @media (min-width: 768px) { flex: 1; } }
+        .flex-estado { width: 100%; @media (min-width: 768px) { flex: 2; } }
+      }
+    }
+
+    /* Divisória e ações do formulário (Responsivo: empilhado no mobile) */
     .actions {
       display: flex;
-      justify-content: flex-end;
+      flex-direction: column-reverse; /* No celular: Salvar em cima, Cancelar embaixo */
       gap: 12px;
       border-top: 1px solid #e5e5e5;
       padding-top: 1rem;
       margin-top: 1.5rem;
 
       button {
+        width: 100%;
+        border-radius: 0 !important; // Mantém o padrão de cantos retos
+
         ::ng-deep .mdc-button__label {
           display: inline-flex;
           align-items: center;
+          justify-content: center;
           gap: 6px;
         }
 
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 6px;
 
         mat-icon {
@@ -92,8 +131,36 @@ mat-tab-group {
           justify-content: center;
         }
       }
+
+      /* No desktop (a partir de 768px): botões alinhados à direita */
+      @media (min-width: 768px) {
+        flex-direction: row;
+        justify-content: flex-end;
+
+        button {
+          width: auto;
+        }
+      }
     }
 
     transition: all 0.3s ease;
   }
+}
+
+//form disabled
+/* Torna a cor do texto nítida em inputs desabilitados */
+.mat-mdc-form-field.mat-form-field-disabled .mat-mdc-input-element {
+  color: rgba(0, 0, 0, 0.87) !important; /* Cor do texto em modo claro */
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.87) !important;
+}
+
+/* Torna a label (rótulo) e o outline visíveis e nítidos */
+.mat-mdc-form-field.mat-form-field-disabled .mdc-floating-label {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.mat-mdc-form-field.mat-form-field-disabled .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-form-field-disabled .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-form-field-disabled .mdc-notched-outline__trailing {
+  border-color: rgba(0, 0, 0, 0.38) !important;
 }
